@@ -1,0 +1,8 @@
+version: '3'
+services:
+  realword-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456test
+    ports:
+      - 3309:3306
