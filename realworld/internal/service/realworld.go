@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/go-kratos/kratos/v2/log"
 	v1 "realworld/api/realworld/v1"
 	"realworld/internal/biz"
 )
@@ -9,12 +10,13 @@ import (
 type RealWorldService struct {
 	v1.UnimplementedRealWorldServer
 
-	uc *biz.RealWorldUsecase
+	uc  *biz.UserUsecase
+	log *log.Helper
 }
 
 // NewRealWorldService new a greeter service.
-func NewRealWorldService(uc *biz.RealWorldUsecase) *RealWorldService {
-	return &RealWorldService{uc: uc}
+func NewRealWorldService(uc *biz.UserUsecase, logger log.Logger) *RealWorldService {
+	return &RealWorldService{uc: uc, log: log.NewHelper(logger)}
 }
 
 // SayHello implements realworld.RealWorldServer.
