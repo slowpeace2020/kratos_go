@@ -18,8 +18,6 @@ Q
 !realworld/internal/data/README.md,a/7/a7ab643c774498358d4a2247b358247d133d11d2
 R
 "realworld/internal/conf/conf.proto,e/7/e7c6c0d7c7c6d8b76c1bb195756bb3fabc6aa550
-Y
-)realworld/deploy/mysql/docker-compose.yml,3/8/3874ebfcd1ce4fced4110e9bb77d146cb5602406
 M
 realworld/configs/config.yaml,4/3/433a79c8d41797a6f4921157d22fd667d244fca4
 T

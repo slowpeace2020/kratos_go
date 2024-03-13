@@ -11,6 +11,11 @@ type userRepo struct {
 	log  *log.Helper
 }
 
+func (r *userRepo) GetUserByEmail(ctx context.Context, email string) (*biz.User, error) {
+	//TODO implement me
+	return nil, nil
+}
+
 // NewUserRepo .
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{

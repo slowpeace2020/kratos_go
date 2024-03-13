@@ -2,6 +2,8 @@ package biz
 
 import (
 	"context"
+	"fmt"
+	"golang.org/x/crypto/bcrypt"
 
 	v1 "realworld/api/realworld/v1"
 
@@ -17,10 +19,35 @@ var (
 // RealWorld is a RealWorld model.
 
 type User struct {
-	Username string
+	Email        string
+	Token        string
+	Username     string
+	Bio          string
+	Image        string
+	PasswordHash string
 }
+
+func hashPassword(password string) string {
+	b, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%v", b)
+	return string(b)
+}
+
+func verifyPassword(hashed, input string) bool {
+	if err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(input)); err != nil {
+		return false
+	}
+
+	return true
+}
+
 type UserRepo interface {
 	CreateUser(ctx context.Context, user *User) error
+	GetUserByEmail(ctx context.Context, email string) (*User, error)
 }
 
 type ProfileRepo interface {
@@ -44,4 +71,8 @@ func (uc *UserUsecase) Register(ctx context.Context, user *User) error {
 
 	}
 	return nil
+}
+
+func (uc *UserUsecase) GetUserByEmail(ctx context.Context, email string) (*User, error) {
+	return nil, nil
 }
