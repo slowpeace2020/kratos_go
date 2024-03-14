@@ -27,6 +27,14 @@ type User struct {
 	PasswordHash string
 }
 
+type UserLogin struct {
+	Email    string
+	Token    string
+	Username string
+	Bio      string
+	Image    string
+}
+
 func hashPassword(password string) string {
 	b, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -66,13 +74,31 @@ func NewUserUsecase(us UserRepo, pr ProfileRepo, logger log.Logger) *UserUsecase
 	return &UserUsecase{us: us, pr: pr, log: log.NewHelper(logger)}
 }
 
-func (uc *UserUsecase) Register(ctx context.Context, user *User) error {
-	if err := uc.us.CreateUser(ctx, user); err != nil {
-
+func (uc *UserUsecase) Register(ctx context.Context, username, email, password string) (*UserLogin, error) {
+	user := &User{
+		Email:        email,
+		Username:     username,
+		PasswordHash: hashPassword(password),
 	}
-	return nil
+	if err := uc.us.CreateUser(ctx, user); err != nil {
+		return nil, err
+	}
+	return &UserLogin{Email: email, Username: username, Token: "xxx"}, nil
 }
 
 func (uc *UserUsecase) GetUserByEmail(ctx context.Context, email string) (*User, error) {
 	return nil, nil
+}
+
+func (uc *UserUsecase) Login(ctx context.Context, email, password string) (*UserLogin, error) {
+
+	u, err := uc.us.GetUserByEmail(ctx, email)
+	if err != nil {
+		return nil, err
+	}
+
+	if !verifyPassword(u.PasswordHash, password) {
+		return nil, errors.New(1, "Login failed", "")
+	}
+	return &UserLogin{Email: u.Email, Username: u.Username, Bio: u.Bio, Image: u.Image, Token: "abx"}, nil
 }
